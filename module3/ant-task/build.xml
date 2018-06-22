@@ -1,0 +1,78 @@
+<project name="Ant.Task" default="help" basedir=".">
+
+	<!-- Define the properties used for the build -->
+	<property name="appname"	value="ant-task"/>
+    <property file="${basedir}/config/project.properties"/>
+	<property name="src" 		location="${basedir}/src"/>
+	<property name="build" 		location="${basedir}/build"/>
+ 	<property name="dist"  		location="${basedir}/dist"/>
+    <property name="lib"  		location="${basedir}/lib"/>
+    <property name="test"  		location="${basedir}/test"/>
+    <property name="restestdir" location="${basedir}/restest"/>
+
+    <target name="help">
+    		<echo>You can use the following targets:</echo>
+    		<echo> </echo>
+            <echo>  help    : (default) Prints this message </echo>
+            <echo>  prop    : Print project properties reading from the file </echo>
+    		<echo>  clean   : Delete work directories</echo>
+            <echo>  init    : Init evironment for the project </echo>
+    		<echo>  compile : Compile servlets into class files</echo>
+            <echo>  utest	: Run junit test</echo>
+		    <echo>  dist    : Package artifacts into a deployable WAR</echo>
+            <echo>  all     : Clean, compile, and package application</echo>
+            <echo></echo>
+    		<echo>For example, to clean, compile, and package all at once, run:</echo>
+    		<echo>prompt> ant all </echo>
+  	</target>
+
+	<!-- Define the CLASSPATH for compile target -->
+ 	<path id="compile.classpath">
+  		<fileset dir="${lib}" includes="**/*.jar"/>
+  	</path>
+
+	<target name="clean" description="Delete old work and dist directories">
+		<delete dir="${build}"/>
+        <delete dir="${dist}"/>
+        <delete dir="${restestdir}"/>
+        <delete dir="${test}/build"/>
+    </target>
+
+     <target name="prop" depends="clean" description="Read project property from the file">
+        <echo> Project property is ${some.properties}</echo>
+  	</target>
+
+    <target name="init" depends="clean,prop" description="Init environment for the project">
+        <mkdir dir="${build}"/>
+        <mkdir dir="${dist}"/>
+        <mkdir dir="${restestdir}"/>
+        <mkdir dir="${test}/build"/>
+    </target>
+ 
+  	<target name="compile" depends="init" description="Compile Java sources">
+	    <javac srcdir="${src}" destdir="${build}" classpathref="compile.classpath" includeantruntime="false"/>
+  	</target>
+
+    <target name="test-compile" depends="compile">
+        <javac srcdir="${test}" destdir="${test}/build" classpathref="compile.classpath" includeantruntime="false"/>
+    </target>
+
+    <target name="utest" depends="compile,test-compile" description="Run junit tests">
+        <junit printsummary="yes" haltonfailure="no">
+            <classpath location="${lib}/junit-4.11.jar"/>
+            <classpath location="${test}/build"/>
+            <classpath location="${lib}/hamcrest-core-1.3.jar"/>
+            <test name="com.test.UnitTest" haltonfailure="no" todir="${restestdir}" outfile="result">
+                <formatter type="plain"/>
+                <formatter type="xml"/>
+            </test>
+        </junit>
+	</target>
+
+	<target name="dist" depends="compile" description="Create WAR file for binary distribution">
+		<jar jarfile="${dist}/${appname}.war" basedir="${build}"/>
+  	</target>
+
+     <target name="all" depends="clean,compile,utest,dist" description="Clean work dirs, init, read properties, compile, test and create a WAR"/>
+ 
+ </project>
