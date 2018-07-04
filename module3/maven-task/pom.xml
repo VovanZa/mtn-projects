@@ -196,9 +196,9 @@
     <!-- Declare data for deploy -->
     <distributionManagement>
         <repository>
-            <id>remote repo</id>
-            <name>Remote repo</name>
-            <url>file://mnt-deploy/</url>
+            <id>internal repo</id>
+            <name>Internal repo</name>
+            <url>file:///home/jenkins/deploy</url>
         </repository>
     </distributionManagement>
 
