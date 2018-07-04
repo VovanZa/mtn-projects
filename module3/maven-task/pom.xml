@@ -198,7 +198,7 @@
         <repository>
             <id>remote repo</id>
             <name>Remote repo</name>
-                <url>file://~/deploy</url>
+            <url>file://mnt-deploy/</url>
         </repository>
     </distributionManagement>
 
