@@ -198,7 +198,7 @@
         <repository>
             <id>remote repo</id>
             <name>Remote repo</name>
-                <url>file:///home/vz/deploy</url>
+                <url>file://~/deploy</url>
         </repository>
     </distributionManagement>
 
