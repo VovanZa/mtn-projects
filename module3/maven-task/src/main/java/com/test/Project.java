@@ -1,3 +1,5 @@
+// It's a simple comments
+
 package com.test;
 
 //dependency on Apache commons-collections
@@ -10,7 +12,7 @@ class Project {
   }
   
   public static void main(String[] args) {
-    System.out.println("Hellow MTN");
+    System.out.println("Hellow MTN!!!");
   }
 
 }
